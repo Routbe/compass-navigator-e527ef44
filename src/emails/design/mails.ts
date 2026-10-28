@@ -8,6 +8,7 @@
  */
 import { box, button, codeBox, esc, greeting, h1, notice, p, quote, shell, urlBox, type Accent } from "./layout";
 import { copyFor, type CopyPack } from "./copy";
+import { workspaceCopyFor } from "./workspace-copy";
 
 /** Brevo placeholder with UPPER → lower → literal fallback. */
 export const P = (key: string, fallback: string) =>
@@ -225,7 +226,9 @@ export function systemNoticeTemplate(lang: "nl" | "en" = "en"): BuiltMail {
 
 // ---------- auth mails rendered by the app ----------
 
-export type AuthIntent = "magic-link" | "verification" | "password-reset" | "email-change" | "welcome";
+export type AuthIntent =
+  | "magic-link" | "verification" | "password-reset" | "email-change" | "welcome"
+  | "workspace-owner-invite" | "workspace-member-onboarding";
 
 export function renderAuthMail(intent: AuthIntent, lang: string, v: { link?: string; code?: string; name?: string; to?: string }): BuiltMail {
   const c = copyFor(lang);
@@ -243,6 +246,19 @@ export function renderAuthMail(intent: AuthIntent, lang: string, v: { link?: str
   });
   const linkBlocks = (btn: string, urlLabel: string) => (link ? [button(btn, link), urlBox(urlLabel, link)] : []);
 
+  if (intent === "workspace-owner-invite" || intent === "workspace-member-onboarding") {
+    const pack = workspaceCopyFor(lang);
+    const t = intent === "workspace-owner-invite" ? pack.ownerInvite : pack.memberOnboarding;
+    const wsName = name || "ROUT Workspace";
+    const fill = (s: string) => s.replace(/\{name\}/g, wsName);
+    const plainName = v.name ?? "ROUT Workspace";
+    return wrap(t.subject.replace(/\{name\}/g, plainName), t.pre, t.badge, intent === "workspace-owner-invite" ? "auth" : "success", fill(t.title), [
+      p(fill(t.intro)),
+      p(t.steps),
+      ...(link ? linkBlocks(t.button, t.urlLabel) : [button(t.button, DASHBOARD)]),
+      notice(t.notice),
+    ]);
+  }
   if (intent === "magic-link") {
     const t = c.login;
     const subject = code ? t.subject.replace("{code}", v.code ?? "") : t.title + " // ROUT";

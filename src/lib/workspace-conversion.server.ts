@@ -95,7 +95,7 @@ export async function startConversion(
   const link = `${siteUrl()}/workspace-transfer/${token}`;
   void sendLocalizedEmail({
     to: (target?.email ?? raw).toLowerCase(),
-    intent: target ? "magic-link" : "welcome",
+    intent: "workspace-owner-invite",
     locale: localeFromRequest(request),
     payload: { link, name: input.workspaceName },
   }).catch(() => undefined);
@@ -183,6 +183,9 @@ async function maybeExecute(transferId: string): Promise<{ completed: boolean; w
         select ${ws}::uuid, ${t.workspace_name}, ${slug}, u.app_metadata->>'stripe_customer_id',
                coalesce(u.app_metadata->>'billing_name', ${t.workspace_name}), u.app_metadata->>'vat_number', u.id
         from public.users u where u.id = ${src}`,
+    // Billing moves with the customer id: clear it on the user so nothing bills twice.
+    sql`update public.users set app_metadata = coalesce(app_metadata, '{}'::jsonb) - 'stripe_customer_id'
+        where id = ${src} and exists(select 1 from public.workspaces where id = ${ws}::uuid)`,
     sql`update public.workspace_transfers set workspace_id = ${ws}::uuid where id = ${t.id}`,
     sql`insert into public.workspace_members (workspace_id, user_id, role)
         select ${ws}::uuid, target_user_id, 'owner' from public.workspace_transfers where id = ${t.id}`,
@@ -194,6 +197,7 @@ async function maybeExecute(transferId: string): Promise<{ completed: boolean; w
         migrated_to_workspace_id = ${ws}::uuid, updated_at = now() where id = ${src}`,
   ]);
 
+  void notifyWorkspaceMembers(ws, t.workspace_name).catch(() => undefined);
   void moveStripeCustomer(ws).catch((e: unknown) => console.error("[workspace-convert] stripe", e instanceof Error ? e.message : "error"));
   return { completed: true, workspaceId: ws };
 }
@@ -206,11 +210,27 @@ async function moveStripeCustomer(workspaceId: string) {
   const customer = rows[0]?.stripe_customer_id;
   if (!customer) return;
   const body = new URLSearchParams({ "metadata[workspace_id]": workspaceId });
-  await fetch(`https://api.stripe.com/v1/customers/${encodeURIComponent(customer)}`, {
+  const res = await fetch(`https://api.stripe.com/v1/customers/${encodeURIComponent(customer)}`, {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/x-www-form-urlencoded" },
     body,
   });
+  if (!res.ok) console.error("[workspace-convert] stripe metadata", res.status, (await res.text()).slice(0, 300));
+}
+
+/** Onboarding mail to everyone who now belongs to the new workspace. Never blocks. */
+async function notifyWorkspaceMembers(workspaceId: string, workspaceName: string) {
+  const members = (await sql`select u.email, u.user_metadata->>'locale' as locale from public.workspace_members m
+    join public.users u on u.id = m.user_id where m.workspace_id = ${workspaceId}::uuid`) as { email: string; locale: string | null }[];
+  const { sendLocalizedEmail } = await import("@/lib/email.server");
+  for (const m of members) {
+    await sendLocalizedEmail({
+      to: m.email,
+      intent: "workspace-member-onboarding",
+      locale: m.locale ?? "en",
+      payload: { link: `${siteUrl()}/dashboard`, name: workspaceName },
+    });
+  }
 }
 
 export async function sunsetStatus(userId: string) {

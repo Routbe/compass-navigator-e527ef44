@@ -20,6 +20,8 @@ export const EMAIL_INTENTS = [
   "password-reset",
   "email-change",
   "welcome",
+  "workspace-owner-invite",
+  "workspace-member-onboarding",
 ] as const;
 export type EmailIntent = (typeof EMAIL_INTENTS)[number];
 
@@ -35,6 +37,9 @@ const INTENT_CATEGORY: Record<EmailIntent, EmailCategory> = {
   "password-reset": "recovery",
   "email-change": "email_change",
   welcome: "welcome",
+  // Rendered by the app (no Brevo template): category "welcome" resolves to ID 0.
+  "workspace-owner-invite": "welcome",
+  "workspace-member-onboarding": "welcome",
 };
 
 /** Statisch register: intent × taal → Brevo-template-ID (O(1), geen DB). */

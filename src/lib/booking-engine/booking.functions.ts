@@ -36,13 +36,11 @@ export const getPublicSlots = createServerFn({ method: "GET" })
 export const createBooking = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => bookingRequest.parse(input))
   .handler(async ({ data }) => {
-    const { hitRateLimit } = await import("@/lib/rate-limit.server").catch(() => ({ hitRateLimit: null }));
-    if (hitRateLimit) {
-      const { getRequestHeader } = await import("@tanstack/react-start/server");
-      const ip = getRequestHeader("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-      const limited = await (hitRateLimit as (k: string, max: number, win: number) => Promise<boolean>)(`booking:${ip}`, 10, 3600).catch(() => false);
-      if (limited) return { ok: false as const, reason: "rate_limited" as const };
-    }
+    const { hitRateLimit } = await import("@/lib/rate-limit-db.server");
+    const { getRequestHeader } = await import("@tanstack/react-start/server");
+    const ip = getRequestHeader("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    const rl = await hitRateLimit("booking_create", ip, { limit: 10, windowSec: 3600 });
+    if (!rl.ok) return { ok: false as const, reason: "rate_limited" as const };
     const { bookSlot } = await import("./book.server");
     try {
       const r = await bookSlot(data);

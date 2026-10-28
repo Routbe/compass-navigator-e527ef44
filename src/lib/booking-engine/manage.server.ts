@@ -35,7 +35,7 @@ export async function overview(userId: string) {
         order by (b.status = 'requested') desc, b.start_utc limit 100`,
     sql`select weekday, start_minute, end_minute, timezone from public.availability_rules where user_id = ${userId}::uuid order by weekday, start_minute`,
     canWs
-      ? sql`select m.user_id::text as user_id, coalesce(p.display_name, p.username, u.email) as name
+      ? sql`select m.user_id::text as user_id, coalesce(p.display_name, u.email) as name
           from public.workspace_members m join public.users u on u.id = m.user_id
           left join public.profiles p on p.id = m.user_id where m.workspace_id = ${workspaceId}::uuid limit 200`
       : Promise.resolve([]),

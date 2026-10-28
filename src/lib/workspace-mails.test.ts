@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { renderAuthMail } from "./mails";
+import { renderAuthMail } from "@/emails/design/mails";
 
 describe("workspace mails", () => {
   it("owner invite carries the transfer link and workspace name", () => {

@@ -1,0 +1,84 @@
+# Roadmap
+- [x] 2026-10-28: e-mailbezorgbaarheid (ROUT-badge, Gmail-actie, disclaimer, platte tekst, geen tracking) gecontroleerd; 95 e-mailtests ok.
+- [x] 2026-10-28: steunpagina-rondleiding wijst nu naar echte velden.
+- [x] 2026-10-28: QR voor alias, direct opslaan, prikbord zichtbaar, groen vinkje-popover, ronde koppelingen, galerijteller+links, feed-fallback + Binnenkort.
+- [x] 2026-10-28: vertalingen NL/EN/FR/DE, gratis fotolimiet afgedwongen, direct opslaan na toevoegen/veld verlaten, Mastodon-foto's, Snapchat-stijl.
+- [ ] Ingelogde browsercontrole (QR, Studio-opslag) — wacht op ROUT-sessie.
+- [x] Vervolg 2026-10-26: rondleidingen, Studio-paginalijst, profiel-QR, foutbeveiliging en transparantie; publieke Profiel/Steunpagina-knoppen toegevoegd (729 tests ok; ingelogde browsercontrole open).
+- [x] Ontdek 2026-10-25: Google-avatars via privacyproxy hersteld, foto ingebed in PNG én SVG, galerijnaam leesbaar en previewkleuren volgen canvas; 30 tests geslaagd, echt publiek profiel gecontroleerd op desktop/mobiel zonder paginafouten of horizontale overflow.
+- [ ] Vervolg 2026-10-24 09:49: resterende sprinttaken hervatten; loginconsent losmaken van workspace-consoletoegang, rondleidingen afwerken en vraagstories voorbereiden; geen sessieverwijdering of db/99 zonder afzonderlijk akkoord.
+- [x] Profielfoto: afwijzing van het uploadadres gereproduceerd en hersteld voor root- en aliasprofielen; 6 regressietests en volledige suite (717 tests) geslaagd.
+- [ ] Profielfoto ingelogd uploaden → opslaan → teruglezen: wacht op een beschikbare ROUT-sessie; geen managed browserlogin beschikbaar.
+- [ ] Volledige hercontrole nieuwe briefings 2026-10-24: veiligheid, één-pagina-wisselaar, OAuth-scope/redirects, profielprivacy en alle tests; live sessies/DNS/e-mail en echte migraties alleen met controleerbare toegang en expliciet wijzigingsakkoord.
+- [x] Vervolg 2026-10-24: Studio-tabbladen transparant met actieve pil; één instellingenknop naast Knopvorm en Typografie, zonder dubbele labels.
+- [ ] Vervolgcontrole Studio-tabbladen en inline instellingen — echte ROUT-sessie nodig voor ingelogde browsercontrole.
+- [ ] Aanvullingen 2026-10-24: Vercel als uitvoeringsdoel; alleen noodzakelijke sleutels opvragen; profielhub-knoppen en achtergrondafhankelijke kaders/berichten verfijnen; Explore-avatarfouten; privé-alias-preview genereren; Press & brand kit met officiële Login/Connect ROUT-code; developer-console en veilige integratieprompts verbeteren; eerste-gebruik-rondleidingen voor profielkeuze, Studio en dashboard; custom domains voor zowel shortlinks als profielhubs. Sleutelrotatie bevestigd.
+- [x] Neon account (management) key saved securely as NEON_MANAGEMENT_API_KEY for branch/project admin
+- [ ] SECURITY: user confirmed all keys rotated on 2026-10-24; check .env exclusion and invalidate existing sessions after explicit approval
+- [ ] Sprint brief (uploaded): Studio tabs segmented control, console personal/workspace scope + transfer, emoji→drawn icons, questions/guestbook toggles, Connect ROUT button, onboarding choice, admin handles, subdomain fallback, emails, ROUT login test-mode/redirect bugs, account preselect on login, hide page switch with 1 page
+- [ ] Quality follow-up: live example rendering and deterministic subdomain rules repaired; 690 existing tests pass; authenticated Studio and real DNS checks remain
+- [ ] Studio: drawn top-level pictograms, remove duplicate QR settings, inline Knopvorm/Typografie customize controls, faithful Live examples
+- [ ] Anonymous questions: avatar answer stories, per-answer ROUT visibility and supported sharing; unsupported automatic external stories marked coming soon
+- [ ] Domains: Bluesky handle failure, subdomain Mastodon verification, Vercel nested subdomain routing and honest fallback/recovery opt-in
+- [ ] Workspaces: auth-first personal/business intent, inactive owner profile, workspace Studio context, business/domain verification and information pages
+- [ ] Admin: personal/workspace allowed handles, handle locking, identity correction/revocation/free retry, active/featured curation
+- [ ] Availability/recovery and business application emails — sender setup and delivery verification required; pricing awaits confirmed fee
+- [x] Mobile dashboard heading: text uses full width, actions underneath; QR fills/logo settings retained in live and draft storage, shared SVG/PNG embed gradients
+- [ ] Signed-in dashboard and QR save → profile share check — waits on an active ROUT session; 3 designer handoff regressions and 9 persistence tests pass; browser confirms solid/transparent/gradient SVG+PNG without an invented emblem, no page errors or horizontal overflow at 320/384px on QR/about/Studio/sign-in
+- [x] Profile QR designer isolation: save uses the active rendered design, delayed loading respects local edits, saved profile queries refresh, QR targets always use rout.be
+- [ ] Studio revision: click-again page switch, folder symbols, inline typography control, questions/guestbook in content with visibility toggles, inline granted badges and recipient email
+- [ ] Uploaded gift/credential brief: db/99 prepared, awaiting exact Neon change confirmation; badge implementation and API still pending
+- [ ] Admin gifts: new fixed/percentage form, private username lookup, preview, resend and mail-status handling implemented; real admin-session creation and mail delivery unverified
+- [ ] Badges: keep admin navigation in portal, normalize website links and suggest editable artwork accent colors
+- [ ] Issued credentials: hidden-by-default awards, linked issuer attribution, recipient mark/badge controls and email notices
+- [ ] Developer issuance: authorized organization-owned badges, certificates/diplomas and idempotent username-based integration
+- [x] Database connection + app secrets
+- [x] P1 AddComponentModal search + socials
+- [x] P2 Live integrations in hub
+- [x] P3 Admin OAuth apps tabs
+- [x] P4 Badge transparency; alias inherits Pro
+- [x] P5 Studio presets, style options, scroll stability
+- [ ] Snapchat in Live Integraties hub (separate storage)
+- [x] Featured profile OG previews on Explore
+- [x] Public profile badges and action-dialog translations
+- [ ] Platform-wide hardcoded text audit and translation cleanup (profile + explore done; dashboard/studio/admin open)
+- [ ] Browser verification of Snapchat and profile previews
+- [x] Snapchat client credentials saved securely
+- [ ] Optional sign-in/email/storage/payment keys (Google, Brevo, Scaleway, Stripe) — waits on user
+- [x] Hub: single "Component toevoegen", social tabs, new platforms, YouTube as normal component, remove Totaal bereik, Badges & diploma's folder
+- [x] Social block: expandable settings, connect account, green verified mark, followers toggle
+- [x] Workspace switcher only with other workspaces (always in console) + console onboarding tour
+- [x] ROUT login "test mode": root cause = 3 duplicate apps share one return address; console now warns on duplicates
+- [ ] i18n batch 2: auth flows — translated existing screens and settings; signed-in/email delivery verification waits on an active ROUT session
+- [ ] i18n batch 2: Studio/dashboard — primary editor, link/status controls and profile settings translated; remaining specialized panels need a follow-up pass, signed-in verification waits on an active ROUT session
+- [ ] AI bio polish & translate (profile_descriptions jsonb in Neon) + language switcher in app nav
+- [ ] Uploaded briefs (education components, community messages, identity/OAuth architecture) — not started, awaiting go-ahead
+- [x] Zero-trust bio verification (rout.be/<username> link, Chess.com, verified date)
+- [ ] Bio verification QA in Studio (signed in): modal, spinners, toasts — strict regex only, no AI
+- [x] Audit line under verified accounts: "Geverifieerd op <datum> via Platform Login / Bio-link"
+- [x] Admin: verify users directly (Pro / Influencer / Business) + Conversie Coach mobile button
+- [ ] Smart media autocomplete briefs (2 uploads) — not started, awaiting go-ahead
+- [x] Support page v2: Studio mode switcher, first-time tour, methods order, external brand links, 6 auto-shrunk photos, Bluesky/Mastodon photos, in-page Stripe (restricted keys only)
+- [ ] Stripe Connect (OAuth) to replace pasted restricted keys — later
+
+## Sprint 2026-10-23 (wacht op bevestiging sleutelrotatie)
+- [ ] Fase 1: sessieterugval DATABASE_URL weg, sessies wissen, testmodus-/redirect-fout Login met ROUT, accountkeuze, Connect ROUT-knop
+- [ ] Fase 2: segmented tabs, eigen icoontjes i.p.v. emoji's, inline instellingenicoon, pagina-wissel verbergen bij 1 pagina, profiel/steunpagina-wisselaar
+- [ ] Fase 3: console persoonlijk/workspace scope, app overdragen, onboarding-keuze
+- [ ] Fase 4: Anonieme vragen + Gastenboek, badges naast naam, showcase 1-op-1
+- [ ] Fase 5: admin handles/curatie, subdomein-tiers + fallback, badge/workspace-mails
+
+## Briefings 2026-10-24 (2 uploads)
+- [x] Tours: profile save keeps display_prefs.firstUseTours (server-side merge)
+- [ ] Custom domains for profile hubs (DNS instructions, live status, host routing)
+- [ ] Profile hub + dashboard tours content
+- [ ] Hub buttons contrast, hide page switch with 1 page, drawn Studio tab icons, inline button/typography controls
+- [ ] Console personal/workspace scope + OAuth client transfer; prompt validation (no prompt=none)
+- [ ] Session cleanup after key rotation — needs explicit approval
+- [ ] Anonymous questions stories/visibility; guestbook verified-only + pin/delete
+- [ ] Admin handles, curation, identity correction with audit log
+- [ ] Account preselect on login; subdomain fallback
+- [ ] Issued credentials db/99 + emails — needs approval for database change
+
+## Open
+- [x] Account omzetten naar Workspace (gebouwd; testen wacht op DATABASE_URL en migratie db/103)

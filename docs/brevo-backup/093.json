@@ -1,0 +1,13 @@
+{
+ "id": 93,
+ "name": "ROUT // Auth - Magic Link (NL)",
+ "subject": "{{ params.CODE }} is je inlogcode voor ROUT",
+ "isActive": true,
+ "sender": {
+  "name": "ROUT Auth",
+  "email": "hallo@rout.be",
+  "id": "1"
+ },
+ "htmlContent": "<html><body><a href=\"https://rout.be/jonaa\" target=\"_blank\" rel=\"noopener\">\n  <img src=\"https://rout.be/api/public/badge/jonaa\" alt=\"Verified on ROUT — @jonaa\" width=\"220\" height=\"40\" loading=\"lazy\" />\n</a></body></html>",
+ "tag": ""
+}

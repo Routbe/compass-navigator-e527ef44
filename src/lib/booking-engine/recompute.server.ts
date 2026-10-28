@@ -74,6 +74,15 @@ export async function runDueJobs(limit = 25) {
 
 /** Sync ICS + CalDAV calendars that are due; only BusyBlocks are written. */
 export async function syncDueCalendars(limit = 20) {
+  return syncCalendars(null, limit);
+}
+
+/** Sync specific calendars right away (owner pressed "sync now"). */
+export async function syncCalendarIds(ids: string[]) {
+  return syncCalendars(ids, ids.length);
+}
+
+async function syncCalendars(ids: string[] | null, limit: number) {
   const key = process.env["BOOKING_HMAC_KEY"] ?? process.env["CONTACT_HASH_SALT"];
   if (!key) throw new Error("BOOKING_HMAC_KEY missing");
   const { open } = await import("@/lib/crypto/secretbox.server");
@@ -82,7 +91,7 @@ export async function syncDueCalendars(limit = 20) {
   const { icsFeedCredentials, caldavCredentials } = await import("./types");
   const cals = (await sql`select id, user_id, adapter, credentials_ciphertext, credentials_iv, sync_cursor
     from public.connected_calendars where adapter in ('ics','caldav') and sync_status <> 'disconnected'
-      and (last_synced_at is null or last_synced_at < now() - interval '10 minutes')
+      and (${ids}::uuid[] is null and (last_synced_at is null or last_synced_at < now() - interval '10 minutes') or id = any(${ids ?? []}::uuid[]))
     order by last_synced_at nulls first limit ${limit}`) as { id: string; user_id: string; adapter: string; credentials_ciphertext: string; credentials_iv: string; sync_cursor: string | null }[];
   const now = new Date();
   const from = addMinutes(startOfUtcDay(now), -1440);

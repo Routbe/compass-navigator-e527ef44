@@ -127,7 +127,8 @@ import { Route as ApiPublicBadgeHandleRouteImport } from './routes/api_.public.b
 import { Route as ApiPublicBlueskyCallbackRouteImport } from './routes/api_.public.bluesky.callback'
 import { Route as ApiPublicBlueskyClientMetadataDotjsonRouteImport } from './routes/api_.public.bluesky.client-metadata[.]json'
 import { Route as ApiPublicBlueskyStartRouteImport } from './routes/api_.public.bluesky.start'
-import { Route as ApiPublicCronBookingEngineRouteImport } from './routes/api_.public.cron.booking-engine'
+import { Route as ApiPublicBookingIcsIdRouteImport } from './routes/api_.public.booking-ics.$id'
+import { Route as ApiPublicCronAvailabilityRouteImport } from './routes/api_.public.cron.availability'
 import { Route as ApiPublicCronCheckDnsRouteImport } from './routes/api_.public.cron.check-dns'
 import { Route as ApiPublicCronCleanupAssetsRouteImport } from './routes/api_.public.cron.cleanup-assets'
 import { Route as ApiPublicCronPurgeAltchaRouteImport } from './routes/api_.public.cron.purge-altcha'
@@ -782,10 +783,15 @@ const ApiPublicBlueskyStartRoute = ApiPublicBlueskyStartRouteImport.update({
   path: '/api/public/bluesky/start',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicCronBookingEngineRoute =
-  ApiPublicCronBookingEngineRouteImport.update({
-    id: '/api_/public/cron/booking-engine',
-    path: '/api/public/cron/booking-engine',
+const ApiPublicBookingIcsIdRoute = ApiPublicBookingIcsIdRouteImport.update({
+  id: '/api_/public/booking-ics/$id',
+  path: '/api/public/booking-ics/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicCronAvailabilityRoute =
+  ApiPublicCronAvailabilityRouteImport.update({
+    id: '/api_/public/cron/availability',
+    path: '/api/public/cron/availability',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ApiPublicCronCheckDnsRoute = ApiPublicCronCheckDnsRouteImport.update({
@@ -1137,7 +1143,8 @@ export interface FileRoutesByFullPath {
   '/api/public/bluesky/callback': typeof ApiPublicBlueskyCallbackRoute
   '/api/public/bluesky/client-metadata.json': typeof ApiPublicBlueskyClientMetadataDotjsonRoute
   '/api/public/bluesky/start': typeof ApiPublicBlueskyStartRoute
-  '/api/public/cron/booking-engine': typeof ApiPublicCronBookingEngineRoute
+  '/api/public/booking-ics/$id': typeof ApiPublicBookingIcsIdRoute
+  '/api/public/cron/availability': typeof ApiPublicCronAvailabilityRoute
   '/api/public/cron/check-dns': typeof ApiPublicCronCheckDnsRoute
   '/api/public/cron/cleanup-assets': typeof ApiPublicCronCleanupAssetsRoute
   '/api/public/cron/purge-altcha': typeof ApiPublicCronPurgeAltchaRoute
@@ -1292,7 +1299,8 @@ export interface FileRoutesByTo {
   '/api/public/bluesky/callback': typeof ApiPublicBlueskyCallbackRoute
   '/api/public/bluesky/client-metadata.json': typeof ApiPublicBlueskyClientMetadataDotjsonRoute
   '/api/public/bluesky/start': typeof ApiPublicBlueskyStartRoute
-  '/api/public/cron/booking-engine': typeof ApiPublicCronBookingEngineRoute
+  '/api/public/booking-ics/$id': typeof ApiPublicBookingIcsIdRoute
+  '/api/public/cron/availability': typeof ApiPublicCronAvailabilityRoute
   '/api/public/cron/check-dns': typeof ApiPublicCronCheckDnsRoute
   '/api/public/cron/cleanup-assets': typeof ApiPublicCronCleanupAssetsRoute
   '/api/public/cron/purge-altcha': typeof ApiPublicCronPurgeAltchaRoute
@@ -1454,7 +1462,8 @@ export interface FileRoutesById {
   '/api_/public/bluesky/callback': typeof ApiPublicBlueskyCallbackRoute
   '/api_/public/bluesky/client-metadata.json': typeof ApiPublicBlueskyClientMetadataDotjsonRoute
   '/api_/public/bluesky/start': typeof ApiPublicBlueskyStartRoute
-  '/api_/public/cron/booking-engine': typeof ApiPublicCronBookingEngineRoute
+  '/api_/public/booking-ics/$id': typeof ApiPublicBookingIcsIdRoute
+  '/api_/public/cron/availability': typeof ApiPublicCronAvailabilityRoute
   '/api_/public/cron/check-dns': typeof ApiPublicCronCheckDnsRoute
   '/api_/public/cron/cleanup-assets': typeof ApiPublicCronCleanupAssetsRoute
   '/api_/public/cron/purge-altcha': typeof ApiPublicCronPurgeAltchaRoute
@@ -1616,7 +1625,8 @@ export interface FileRouteTypes {
     | '/api/public/bluesky/callback'
     | '/api/public/bluesky/client-metadata.json'
     | '/api/public/bluesky/start'
-    | '/api/public/cron/booking-engine'
+    | '/api/public/booking-ics/$id'
+    | '/api/public/cron/availability'
     | '/api/public/cron/check-dns'
     | '/api/public/cron/cleanup-assets'
     | '/api/public/cron/purge-altcha'
@@ -1771,7 +1781,8 @@ export interface FileRouteTypes {
     | '/api/public/bluesky/callback'
     | '/api/public/bluesky/client-metadata.json'
     | '/api/public/bluesky/start'
-    | '/api/public/cron/booking-engine'
+    | '/api/public/booking-ics/$id'
+    | '/api/public/cron/availability'
     | '/api/public/cron/check-dns'
     | '/api/public/cron/cleanup-assets'
     | '/api/public/cron/purge-altcha'
@@ -1932,7 +1943,8 @@ export interface FileRouteTypes {
     | '/api_/public/bluesky/callback'
     | '/api_/public/bluesky/client-metadata.json'
     | '/api_/public/bluesky/start'
-    | '/api_/public/cron/booking-engine'
+    | '/api_/public/booking-ics/$id'
+    | '/api_/public/cron/availability'
     | '/api_/public/cron/check-dns'
     | '/api_/public/cron/cleanup-assets'
     | '/api_/public/cron/purge-altcha'
@@ -2052,7 +2064,8 @@ export interface RootRouteChildren {
   ApiPublicBlueskyCallbackRoute: typeof ApiPublicBlueskyCallbackRoute
   ApiPublicBlueskyClientMetadataDotjsonRoute: typeof ApiPublicBlueskyClientMetadataDotjsonRoute
   ApiPublicBlueskyStartRoute: typeof ApiPublicBlueskyStartRoute
-  ApiPublicCronBookingEngineRoute: typeof ApiPublicCronBookingEngineRoute
+  ApiPublicBookingIcsIdRoute: typeof ApiPublicBookingIcsIdRoute
+  ApiPublicCronAvailabilityRoute: typeof ApiPublicCronAvailabilityRoute
   ApiPublicCronCheckDnsRoute: typeof ApiPublicCronCheckDnsRoute
   ApiPublicCronCleanupAssetsRoute: typeof ApiPublicCronCleanupAssetsRoute
   ApiPublicCronPurgeAltchaRoute: typeof ApiPublicCronPurgeAltchaRoute
@@ -2910,11 +2923,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicBlueskyStartRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api_/public/cron/booking-engine': {
-      id: '/api_/public/cron/booking-engine'
-      path: '/api/public/cron/booking-engine'
-      fullPath: '/api/public/cron/booking-engine'
-      preLoaderRoute: typeof ApiPublicCronBookingEngineRouteImport
+    '/api_/public/booking-ics/$id': {
+      id: '/api_/public/booking-ics/$id'
+      path: '/api/public/booking-ics/$id'
+      fullPath: '/api/public/booking-ics/$id'
+      preLoaderRoute: typeof ApiPublicBookingIcsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api_/public/cron/availability': {
+      id: '/api_/public/cron/availability'
+      path: '/api/public/cron/availability'
+      fullPath: '/api/public/cron/availability'
+      preLoaderRoute: typeof ApiPublicCronAvailabilityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api_/public/cron/check-dns': {
@@ -3503,7 +3523,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicBlueskyClientMetadataDotjsonRoute:
     ApiPublicBlueskyClientMetadataDotjsonRoute,
   ApiPublicBlueskyStartRoute: ApiPublicBlueskyStartRoute,
-  ApiPublicCronBookingEngineRoute: ApiPublicCronBookingEngineRoute,
+  ApiPublicBookingIcsIdRoute: ApiPublicBookingIcsIdRoute,
+  ApiPublicCronAvailabilityRoute: ApiPublicCronAvailabilityRoute,
   ApiPublicCronCheckDnsRoute: ApiPublicCronCheckDnsRoute,
   ApiPublicCronCleanupAssetsRoute: ApiPublicCronCleanupAssetsRoute,
   ApiPublicCronPurgeAltchaRoute: ApiPublicCronPurgeAltchaRoute,

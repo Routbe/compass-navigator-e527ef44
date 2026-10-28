@@ -147,6 +147,10 @@ export async function bookSlot(req: BookingRequest, now = new Date()): Promise<B
       });
       if (!checkoutUrl) return { ok: false, reason: "payment_unavailable" };
     }
+    if (status === "confirmed") {
+      const { sendBookingInvite } = await import("./invite.server");
+      void sendBookingInvite(bookingIds[0]!);
+    }
     return { ok: true, bookingIds, status, hostUserIds: hostIds, checkoutUrl };
   }
   return { ok: false, reason: "slot_taken" };
@@ -188,6 +192,10 @@ export async function confirmPaidBooking(bookingId: string, sessionId: string): 
     from public.booking_event_types t
     where b.id = ${bookingId}::uuid and t.id = b.event_type_id and b.status = 'pending_payment'
     returning b.status`) as { status: string }[];
+  if (rows[0]?.status === "confirmed") {
+    const { sendBookingInvite } = await import("./invite.server");
+    void sendBookingInvite(bookingId);
+  }
   return rows[0]?.status ?? "noop";
 }
 

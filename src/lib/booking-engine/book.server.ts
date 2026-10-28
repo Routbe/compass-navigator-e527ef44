@@ -75,7 +75,7 @@ function bookingStatements(p: {
   const s = p.range.startUtc.toISOString(), e = p.range.endUtc.toISOString();
   const bs = p.range.blockStartUtc.toISOString(), be = p.range.blockEndUtc.toISOString();
   const sorted = [...p.hostIds].sort();
-  const stmts = [];
+  const stmts: ReturnType<typeof sql>[] = [];
   for (const h of sorted) stmts.push(sql`select pg_advisory_xact_lock(hashtextextended(${lockKey(h, p.range.startUtc)}, 0))`);
   for (const h of sorted) {
     stmts.push(sql`select public.wt_assert(not exists (

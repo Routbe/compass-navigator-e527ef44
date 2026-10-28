@@ -69,6 +69,18 @@ export async function applyStripeEvent(event: StripeEvent): Promise<string> {
   // Makersdonaties lopen buiten de verificatiebetalingen om.
   const meta = metadataOf(object);
 
+  // Paid booking holds (booking engine): confirm on payment, release on expiry.
+  if (meta["kind"] === "booking" && meta["booking_id"]) {
+    const { confirmPaidBooking, releaseBookingHold } = await import("@/lib/booking-engine/book.server");
+    if (event.type === "checkout.session.completed" && object["payment_status"] === "paid") {
+      return `booking:${await confirmPaidBooking(meta["booking_id"], String(object["id"] ?? ""))}`;
+    }
+    if (event.type === "checkout.session.expired") {
+      return `booking:${await releaseBookingHold(meta["booking_id"])}`;
+    }
+    return "booking:ignored";
+  }
+
   // Pro-tier of Root-subdomein add-on gekocht via Checkout: metadata bepaalt
   // welk recht wordt toegekend. Alleen een bevestigde betaling telt.
   const productKind = (meta["product"] ?? meta["kind"] ?? "").toLowerCase();

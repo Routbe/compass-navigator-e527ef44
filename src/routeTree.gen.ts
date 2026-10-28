@@ -73,6 +73,7 @@ import { Route as ReviewTokenRouteImport } from './routes/review.$token'
 import { Route as SSlugRouteImport } from './routes/s.$slug'
 import { Route as StatsTokenRouteImport } from './routes/stats.$token'
 import { Route as UUsernameRouteImport } from './routes/u.$username'
+import { Route as WorkspaceTransferTokenRouteImport } from './routes/workspace-transfer.$token'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminContactRouteImport } from './routes/_authenticated/admin.contact'
 import { Route as AuthenticatedAdminCustomBadgesRouteImport } from './routes/_authenticated/admin.custom-badges'
@@ -132,6 +133,7 @@ import { Route as ApiPublicCronPurgeAltchaRouteImport } from './routes/api_.publ
 import { Route as ApiPublicCronPurgeSharedFilesRouteImport } from './routes/api_.public.cron.purge-shared-files'
 import { Route as ApiPublicCronScanTransfersRouteImport } from './routes/api_.public.cron.scan-transfers'
 import { Route as ApiPublicCronSecureshieldBillingRouteImport } from './routes/api_.public.cron.secureshield-billing'
+import { Route as ApiPublicCronSunsetScrubberRouteImport } from './routes/api_.public.cron.sunset-scrubber'
 import { Route as ApiPublicCronSyncFollowersRouteImport } from './routes/api_.public.cron.sync-followers'
 import { Route as ApiPublicCronSyncSocialsRouteImport } from './routes/api_.public.cron.sync-socials'
 import { Route as ApiPublicIdentityDiditWebhookRouteImport } from './routes/api_.public.identity.didit-webhook'
@@ -486,6 +488,11 @@ const UUsernameRoute = UUsernameRouteImport.update({
   path: '/u/$username',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkspaceTransferTokenRoute = WorkspaceTransferTokenRouteImport.update({
+  id: '/workspace-transfer/$token',
+  path: '/workspace-transfer/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -809,6 +816,12 @@ const ApiPublicCronSecureshieldBillingRoute =
     path: '/api/public/cron/secureshield-billing',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicCronSunsetScrubberRoute =
+  ApiPublicCronSunsetScrubberRouteImport.update({
+    id: '/api_/public/cron/sunset-scrubber',
+    path: '/api/public/cron/sunset-scrubber',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicCronSyncFollowersRoute =
   ApiPublicCronSyncFollowersRouteImport.update({
     id: '/api_/public/cron/sync-followers',
@@ -1063,6 +1076,7 @@ export interface FileRoutesByFullPath {
   '/s/$slug': typeof SSlugRoute
   '/stats/$token': typeof StatsTokenRoute
   '/u/$username': typeof UUsernameRouteWithChildren
+  '/workspace-transfer/$token': typeof WorkspaceTransferTokenRoute
   '/auth/': typeof AuthIndexRoute
   '/admin/contact': typeof AuthenticatedAdminContactRoute
   '/admin/custom-badges': typeof AuthenticatedAdminCustomBadgesRoute
@@ -1122,6 +1136,7 @@ export interface FileRoutesByFullPath {
   '/api/public/cron/purge-shared-files': typeof ApiPublicCronPurgeSharedFilesRoute
   '/api/public/cron/scan-transfers': typeof ApiPublicCronScanTransfersRoute
   '/api/public/cron/secureshield-billing': typeof ApiPublicCronSecureshieldBillingRoute
+  '/api/public/cron/sunset-scrubber': typeof ApiPublicCronSunsetScrubberRoute
   '/api/public/cron/sync-followers': typeof ApiPublicCronSyncFollowersRoute
   '/api/public/cron/sync-socials': typeof ApiPublicCronSyncSocialsRoute
   '/api/public/identity/didit-webhook': typeof ApiPublicIdentityDiditWebhookRoute
@@ -1217,6 +1232,7 @@ export interface FileRoutesByTo {
   '/s/$slug': typeof SSlugRoute
   '/stats/$token': typeof StatsTokenRoute
   '/u/$username': typeof UUsernameRouteWithChildren
+  '/workspace-transfer/$token': typeof WorkspaceTransferTokenRoute
   '/auth': typeof AuthIndexRoute
   '/admin/contact': typeof AuthenticatedAdminContactRoute
   '/admin/custom-badges': typeof AuthenticatedAdminCustomBadgesRoute
@@ -1274,6 +1290,7 @@ export interface FileRoutesByTo {
   '/api/public/cron/purge-shared-files': typeof ApiPublicCronPurgeSharedFilesRoute
   '/api/public/cron/scan-transfers': typeof ApiPublicCronScanTransfersRoute
   '/api/public/cron/secureshield-billing': typeof ApiPublicCronSecureshieldBillingRoute
+  '/api/public/cron/sunset-scrubber': typeof ApiPublicCronSunsetScrubberRoute
   '/api/public/cron/sync-followers': typeof ApiPublicCronSyncFollowersRoute
   '/api/public/cron/sync-socials': typeof ApiPublicCronSyncSocialsRoute
   '/api/public/identity/didit-webhook': typeof ApiPublicIdentityDiditWebhookRoute
@@ -1374,6 +1391,7 @@ export interface FileRoutesById {
   '/s/$slug': typeof SSlugRoute
   '/stats/$token': typeof StatsTokenRoute
   '/u/$username': typeof UUsernameRouteWithChildren
+  '/workspace-transfer/$token': typeof WorkspaceTransferTokenRoute
   '/auth/': typeof AuthIndexRoute
   '/_authenticated/admin/contact': typeof AuthenticatedAdminContactRoute
   '/_authenticated/admin/custom-badges': typeof AuthenticatedAdminCustomBadgesRoute
@@ -1433,6 +1451,7 @@ export interface FileRoutesById {
   '/api_/public/cron/purge-shared-files': typeof ApiPublicCronPurgeSharedFilesRoute
   '/api_/public/cron/scan-transfers': typeof ApiPublicCronScanTransfersRoute
   '/api_/public/cron/secureshield-billing': typeof ApiPublicCronSecureshieldBillingRoute
+  '/api_/public/cron/sunset-scrubber': typeof ApiPublicCronSunsetScrubberRoute
   '/api_/public/cron/sync-followers': typeof ApiPublicCronSyncFollowersRoute
   '/api_/public/cron/sync-socials': typeof ApiPublicCronSyncSocialsRoute
   '/api_/public/identity/didit-webhook': typeof ApiPublicIdentityDiditWebhookRoute
@@ -1533,6 +1552,7 @@ export interface FileRouteTypes {
     | '/s/$slug'
     | '/stats/$token'
     | '/u/$username'
+    | '/workspace-transfer/$token'
     | '/auth/'
     | '/admin/contact'
     | '/admin/custom-badges'
@@ -1592,6 +1612,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/purge-shared-files'
     | '/api/public/cron/scan-transfers'
     | '/api/public/cron/secureshield-billing'
+    | '/api/public/cron/sunset-scrubber'
     | '/api/public/cron/sync-followers'
     | '/api/public/cron/sync-socials'
     | '/api/public/identity/didit-webhook'
@@ -1687,6 +1708,7 @@ export interface FileRouteTypes {
     | '/s/$slug'
     | '/stats/$token'
     | '/u/$username'
+    | '/workspace-transfer/$token'
     | '/auth'
     | '/admin/contact'
     | '/admin/custom-badges'
@@ -1744,6 +1766,7 @@ export interface FileRouteTypes {
     | '/api/public/cron/purge-shared-files'
     | '/api/public/cron/scan-transfers'
     | '/api/public/cron/secureshield-billing'
+    | '/api/public/cron/sunset-scrubber'
     | '/api/public/cron/sync-followers'
     | '/api/public/cron/sync-socials'
     | '/api/public/identity/didit-webhook'
@@ -1843,6 +1866,7 @@ export interface FileRouteTypes {
     | '/s/$slug'
     | '/stats/$token'
     | '/u/$username'
+    | '/workspace-transfer/$token'
     | '/auth/'
     | '/_authenticated/admin/contact'
     | '/_authenticated/admin/custom-badges'
@@ -1902,6 +1926,7 @@ export interface FileRouteTypes {
     | '/api_/public/cron/purge-shared-files'
     | '/api_/public/cron/scan-transfers'
     | '/api_/public/cron/secureshield-billing'
+    | '/api_/public/cron/sunset-scrubber'
     | '/api_/public/cron/sync-followers'
     | '/api_/public/cron/sync-socials'
     | '/api_/public/identity/didit-webhook'
@@ -1990,6 +2015,7 @@ export interface RootRouteChildren {
   SSlugRoute: typeof SSlugRoute
   StatsTokenRoute: typeof StatsTokenRoute
   UUsernameRoute: typeof UUsernameRouteWithChildren
+  WorkspaceTransferTokenRoute: typeof WorkspaceTransferTokenRoute
   ApiAdminMailCheckRoute: typeof ApiAdminMailCheckRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiBunqCheckStatusRoute: typeof ApiBunqCheckStatusRoute
@@ -2019,6 +2045,7 @@ export interface RootRouteChildren {
   ApiPublicCronPurgeSharedFilesRoute: typeof ApiPublicCronPurgeSharedFilesRoute
   ApiPublicCronScanTransfersRoute: typeof ApiPublicCronScanTransfersRoute
   ApiPublicCronSecureshieldBillingRoute: typeof ApiPublicCronSecureshieldBillingRoute
+  ApiPublicCronSunsetScrubberRoute: typeof ApiPublicCronSunsetScrubberRoute
   ApiPublicCronSyncFollowersRoute: typeof ApiPublicCronSyncFollowersRoute
   ApiPublicCronSyncSocialsRoute: typeof ApiPublicCronSyncSocialsRoute
   ApiPublicIdentityDiditWebhookRoute: typeof ApiPublicIdentityDiditWebhookRoute
@@ -2491,6 +2518,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UUsernameRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/workspace-transfer/$token': {
+      id: '/workspace-transfer/$token'
+      path: '/workspace-transfer/$token'
+      fullPath: '/workspace-transfer/$token'
+      preLoaderRoute: typeof WorkspaceTransferTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
       path: '/'
@@ -2902,6 +2936,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/cron/secureshield-billing'
       fullPath: '/api/public/cron/secureshield-billing'
       preLoaderRoute: typeof ApiPublicCronSecureshieldBillingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api_/public/cron/sunset-scrubber': {
+      id: '/api_/public/cron/sunset-scrubber'
+      path: '/api/public/cron/sunset-scrubber'
+      fullPath: '/api/public/cron/sunset-scrubber'
+      preLoaderRoute: typeof ApiPublicCronSunsetScrubberRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api_/public/cron/sync-followers': {
@@ -3416,6 +3457,7 @@ const rootRouteChildren: RootRouteChildren = {
   SSlugRoute: SSlugRoute,
   StatsTokenRoute: StatsTokenRoute,
   UUsernameRoute: UUsernameRouteWithChildren,
+  WorkspaceTransferTokenRoute: WorkspaceTransferTokenRoute,
   ApiAdminMailCheckRoute: ApiAdminMailCheckRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiBunqCheckStatusRoute: ApiBunqCheckStatusRoute,
@@ -3446,6 +3488,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicCronPurgeSharedFilesRoute: ApiPublicCronPurgeSharedFilesRoute,
   ApiPublicCronScanTransfersRoute: ApiPublicCronScanTransfersRoute,
   ApiPublicCronSecureshieldBillingRoute: ApiPublicCronSecureshieldBillingRoute,
+  ApiPublicCronSunsetScrubberRoute: ApiPublicCronSunsetScrubberRoute,
   ApiPublicCronSyncFollowersRoute: ApiPublicCronSyncFollowersRoute,
   ApiPublicCronSyncSocialsRoute: ApiPublicCronSyncSocialsRoute,
   ApiPublicIdentityDiditWebhookRoute: ApiPublicIdentityDiditWebhookRoute,

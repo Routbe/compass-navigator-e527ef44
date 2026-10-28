@@ -2,11 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 
 /** Booking engine worker: sync ICS/CalDAV, release stale holds, recompute availability. LOVABLE_CRON_SECRET. */
 async function handle(request: Request) {
-  const secret = process.env["LOVABLE_CRON_SECRET"];
-  if (!secret) return new Response("Not configured", { status: 503 });
+  // Vercel Cron sends `Authorization: Bearer $CRON_SECRET`; Lovable/manual callers use LOVABLE_CRON_SECRET.
+  const secrets = [process.env["CRON_SECRET"], process.env["LOVABLE_CRON_SECRET"]].filter((s): s is string => Boolean(s));
+  if (secrets.length === 0) return new Response("Not configured", { status: 503 });
   const provided =
     request.headers.get("x-cron-secret") ?? (request.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
-  if (provided !== secret) return new Response("Unauthorized", { status: 401 });
+  if (!provided || !secrets.includes(provided)) return new Response("Unauthorized", { status: 401 });
 
   const { syncDueCalendars, runDueJobs } = await import("@/lib/booking-engine/recompute.server");
   const { releaseExpiredHolds } = await import("@/lib/booking-engine/book.server");
@@ -16,7 +17,7 @@ async function handle(request: Request) {
   return Response.json({ success: true, sync, released, jobs });
 }
 
-export const Route = createFileRoute("/api_/public/cron/booking-engine")({
+export const Route = createFileRoute("/api_/public/cron/availability")({
   server: {
     handlers: {
       POST: async ({ request }) => handle(request),

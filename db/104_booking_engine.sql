@@ -143,6 +143,11 @@ create table if not exists public.availability_jobs (
 );
 create index if not exists availability_jobs_due on public.availability_jobs (run_after);
 
-grant select, insert, update, delete on public.booking_event_types, public.booking_event_type_hosts,
-  public.availability_rules, public.availability_overrides, public.connected_calendars, public.calendar_events,
-  public.availability_cache, public.bookings, public.availability_jobs to service_role;
+do $$ begin
+  if exists (select 1 from pg_roles where rolname = 'rout_app') then
+    grant select, insert, update, delete on public.booking_event_types, public.booking_event_type_hosts,
+      public.availability_rules, public.availability_overrides, public.connected_calendars, public.calendar_events,
+      public.availability_cache, public.bookings, public.availability_jobs to rout_app;
+    grant usage on sequence public.calendar_events_id_seq to rout_app;
+  end if;
+end $$;

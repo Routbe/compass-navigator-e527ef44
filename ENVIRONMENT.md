@@ -34,6 +34,7 @@
 - `GO_LINK_SECRET` — Server-only random secret.
 - `ALTCHA_HMAC_KEY` — Server-only random secret.
 - `CONTACT_HASH_SALT` — Server-only random secret.
+- `BOOKING_HMAC_KEY` — Server-only random secret; hashes external calendar event ids (booking engine).
 - `ADMIN_BOOTSTRAP_TOKEN` — Server-only random secret.
 - `LOVABLE_CRON_SECRET` — Server-only random secret.
 - `CRON_SECRET` — Optional alias for `LOVABLE_CRON_SECRET` (asset cleanup accepts `?token=`).
